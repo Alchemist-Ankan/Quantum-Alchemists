@@ -1,4 +1,4 @@
-# MindBridge Coach
+# Mind Bridge
 
 A mental health coaching application built with React, TypeScript, and Tailwind CSS.
 
