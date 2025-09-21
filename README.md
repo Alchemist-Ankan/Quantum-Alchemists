@@ -8,7 +8,7 @@
 
 *Transforming mental healthcare through technology, privacy, and compassion*
 
-[![Live Demo](https://img.shields.io/badge/🌐-Live%20Demo-success?style=for-the-badge)](https://mindbridge-6j1eby5y5-ankan-sarkars-projects.vercel.app)
+[![Live Demo](https://img.shields.io/badge/🌐-Live%20Demo-success?style=for-the-badge)](https://quantum-alchemists.vercel.app/)
 
 </div>
 
@@ -101,7 +101,7 @@ npm run dev
 # Visit: http://localhost:5174
 ```
 
-**Live Demo**: [https://mindbridge-6j1eby5y5-ankan-sarkars-projects.vercel.app](https://mindbridge-6j1eby5y5-ankan-sarkars-projects.vercel.app)
+**Live Demo**: [https://quantum-alchemists.vercel.app/](https://quantum-alchemists.vercel.app/)
 
 ---
 
