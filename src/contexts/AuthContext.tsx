@@ -1,14 +1,14 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { signInWithGoogle as firebaseSignInWithGoogle, signOut as firebaseSignOut, isFirebaseConfigured } from '../services/firebase';
+import { 
+  signInWithGoogle as firebaseSignInWithGoogle, 
+  signOut as firebaseSignOut, 
+  onAuthStateChange,
+  UserProfile,
+  isFirebaseConfigured
+} from '../services/firebase';
 
-// User interface
-interface User {
-  uid: string;
-  email: string | null;
-  displayName: string | null;
-  photoURL: string | null;
-  isAnonymous: boolean;
-}
+// User interface - using Firebase UserProfile
+interface User extends UserProfile {}
 
 // Auth context interface
 interface AuthContextType {
@@ -18,6 +18,7 @@ interface AuthContextType {
   signInWithGoogle: () => Promise<void>;
   signOut: () => Promise<void>;
   continueAsGuest: () => void;
+  error: string | null;
 }
 
 // Create context
@@ -41,56 +42,76 @@ interface AuthProviderProps {
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  // Check for existing user session on app start
+  // Check for Firebase auth state changes
   useEffect(() => {
-    const checkAuthState = () => {
+    if (!isFirebaseConfigured()) {
+      console.warn('Firebase not configured, using guest mode');
+      setIsLoading(false);
+      return;
+    }
+
+    const unsubscribe = onAuthStateChange(async (firebaseUser) => {
       try {
-        // Check localStorage for guest session
-        const guestSession = localStorage.getItem('guestSession');
-        const savedUser = localStorage.getItem('currentUser');
-        
-        if (savedUser) {
-          setUser(JSON.parse(savedUser));
-        } else if (guestSession) {
-          // Create guest user
-          const guestUser: User = {
-            uid: `guest_${Date.now()}`,
-            email: null,
-            displayName: 'Guest User',
-            photoURL: null,
-            isAnonymous: true
+        if (firebaseUser) {
+          // User is signed in
+          const userProfile: User = {
+            uid: firebaseUser.uid,
+            email: firebaseUser.email,
+            displayName: firebaseUser.displayName,
+            photoURL: firebaseUser.photoURL,
+            isAnonymous: firebaseUser.isAnonymous,
+            lastLoginAt: new Date()
           };
-          setUser(guestUser);
-          localStorage.setItem('currentUser', JSON.stringify(guestUser));
+          
+          setUser(userProfile);
+          localStorage.setItem('currentUser', JSON.stringify(userProfile));
+          localStorage.removeItem('guestSession');
+        } else {
+          // User is signed out
+          const guestSession = localStorage.getItem('guestSession');
+          const savedUser = localStorage.getItem('currentUser');
+          
+          if (savedUser && !guestSession) {
+            // Clear stored user data
+            setUser(null);
+            localStorage.removeItem('currentUser');
+          } else if (guestSession) {
+            // Restore guest session
+            const guestUser: User = {
+              uid: `guest_${Date.now()}`,
+              email: null,
+              displayName: 'Guest User',
+              photoURL: null,
+              isAnonymous: true
+            };
+            setUser(guestUser);
+            localStorage.setItem('currentUser', JSON.stringify(guestUser));
+          }
         }
       } catch (error) {
-        console.error('Error checking auth state:', error);
+        console.error('Error handling auth state change:', error);
+        setError('Authentication error occurred');
       } finally {
         setIsLoading(false);
       }
-    };
+    });
 
-    checkAuthState();
+    return () => unsubscribe();
   }, []);
 
-  // Sign in with Google (Firebase implementation when configured)
+  // Sign in with Google (Firebase implementation)
   const signInWithGoogle = async (): Promise<void> => {
     setIsLoading(true);
+    setError(null);
+    
     try {
       if (isFirebaseConfigured()) {
         // Use real Firebase authentication
-        const user = await firebaseSignInWithGoogle();
-        const authUser: User = {
-          uid: user.uid,
-          email: user.email,
-          displayName: user.displayName,
-          photoURL: user.photoURL,
-          isAnonymous: false
-        };
-        setUser(authUser);
-        localStorage.setItem('currentUser', JSON.stringify(authUser));
-        localStorage.removeItem('guestSession');
+        const userProfile = await firebaseSignInWithGoogle();
+        // Firebase auth state listener will handle setting the user
+        console.log('Google sign-in successful:', userProfile.displayName);
       } else {
         // Fallback to mock implementation for development
         const mockGoogleUser: User = {
@@ -107,8 +128,9 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         
         console.log('Google sign-in successful (mock mode - Firebase not configured)');
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Google sign-in failed:', error);
+      setError(error.message || 'Failed to sign in with Google');
       throw error;
     } finally {
       setIsLoading(false);
@@ -118,16 +140,19 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   // Sign out
   const signOut = async (): Promise<void> => {
     try {
+      setError(null);
+      
       if (isFirebaseConfigured() && user && !user.isAnonymous) {
         // Use Firebase sign out for authenticated users
         await firebaseSignOut();
       }
       
+      // Clear all user data
       setUser(null);
       localStorage.removeItem('currentUser');
       localStorage.removeItem('guestSession');
       
-      // Optionally clear all user-specific data
+      // Clear user-specific data
       const keysToRemove = [
         'moodHistory',
         'journalEntries',
@@ -141,8 +166,9 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       });
       
       console.log('Sign out successful');
-    } catch (error) {
+    } catch (error: any) {
       console.error('Sign out failed:', error);
+      setError('Failed to sign out');
       throw error;
     }
   };
@@ -160,6 +186,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     setUser(guestUser);
     localStorage.setItem('guestSession', 'true');
     localStorage.setItem('currentUser', JSON.stringify(guestUser));
+    setError(null);
   };
 
   // Computed values
@@ -171,7 +198,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     isAuthenticated,
     signInWithGoogle,
     signOut,
-    continueAsGuest
+    continueAsGuest,
+    error
   };
 
   return (

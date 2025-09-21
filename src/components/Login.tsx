@@ -1,30 +1,24 @@
 import { useState } from 'react';
+import { useAuth } from '../contexts/AuthContext';
 
-interface LoginProps {
-  onLogin: () => void;
-}
-
-export default function Login({ onLogin }: LoginProps) {
+export default function Login() {
+  const { signInWithGoogle, continueAsGuest, error } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
 
   const handleGoogleLogin = async () => {
     setIsLoading(true);
     try {
-      // TODO: Implement Firebase Google OAuth
-      console.log('Google login clicked');
-      // Simulate login for now
-      setTimeout(() => {
-        setIsLoading(false);
-        onLogin();
-      }, 1000);
+      await signInWithGoogle();
     } catch (error) {
       console.error('Login failed:', error);
+      // Error is handled by AuthContext
+    } finally {
       setIsLoading(false);
     }
   };
 
   const handleContinueAsGuest = () => {
-    onLogin();
+    continueAsGuest();
   };
 
   return (
@@ -50,6 +44,13 @@ export default function Login({ onLogin }: LoginProps) {
             Sign in to sync your mood data across devices and get personalized insights for your mental wellness journey.
           </p>
         </div>
+
+        {/* Error Message */}
+        {error && (
+          <div className="mb-6 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl">
+            <p className="text-red-700 dark:text-red-400 text-sm font-medium">{error}</p>
+          </div>
+        )}
 
         {/* Login Options */}
         <div className="space-y-4">

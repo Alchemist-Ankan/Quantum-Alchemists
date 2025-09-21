@@ -30,7 +30,7 @@ export default function UserProfile() {
   if (!user) return null;
 
   return (
-    <div className="relative">
+    <div className="relative flex-shrink-0">
       {/* Profile Button */}
       <button
         onClick={() => setShowProfile(!showProfile)}
@@ -47,7 +47,7 @@ export default function UserProfile() {
             {user.isAnonymous ? '👤' : (user.displayName?.[0] || user.email?.[0] || '?')}
           </div>
         )}
-        <span className="text-sm font-medium text-gray-700 dark:text-gray-300 hidden sm:inline truncate max-w-32">
+        <span className="text-sm font-medium text-gray-700 dark:text-gray-300 hidden xl:inline truncate max-w-24">
           {user.isAnonymous ? 'Guest' : (user.displayName || user.email)}
         </span>
         <svg
@@ -75,7 +75,7 @@ export default function UserProfile() {
           <div className="fixed z-50 bg-white/95 dark:bg-gray-800/95 backdrop-blur-sm rounded-xl shadow-2xl border border-white/20 dark:border-gray-700 overflow-y-auto
             /* Mobile: Full width modal at bottom */
             max-sm:bottom-0 max-sm:left-0 max-sm:right-0 max-sm:rounded-b-none max-sm:rounded-t-xl max-sm:max-h-[80vh]
-            /* Desktop: Dropdown from top right */
+            /* Desktop: Dropdown aligned with profile button on the right */
             sm:top-16 sm:right-4 sm:w-80 sm:max-h-[calc(100vh-5rem)]
             /* Ensure it fits on smaller screens */
             max-w-[calc(100vw-1rem)]">

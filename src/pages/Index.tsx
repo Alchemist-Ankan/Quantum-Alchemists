@@ -25,9 +25,9 @@ export default function Index() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 p-4 transition-all duration-300">
       {/* Top Bar */}
-      <div className="flex justify-between items-center mb-6 relative">
-        <ThemeToggle />
-        <div className="flex-shrink-0">
+      <div className="flex justify-end items-center mb-6 relative">
+        <div className="flex items-center space-x-6">
+          <ThemeToggle />
           <UserProfile />
         </div>
       </div>
