@@ -50,7 +50,7 @@ Mental health issues are increasing globally, but access to professional help re
 - ✅ Production deployment
 
 ### Phase 2: Enhanced AI (3-6 months)
-- 🔄 OpenAI GPT integration
+- 🔄 Google Gemini integration
 - 🔄 Advanced mood analysis
 - 🔄 Personalized recommendations
 

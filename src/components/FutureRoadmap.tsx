@@ -58,11 +58,11 @@ export default function FutureRoadmap() {
       timeline: "Next 3-6 months",
       description: "Transform from static responses to intelligent AI-powered mental health support",
       features: [
-        "AI & NLP: OpenAI GPT API integration",
+        "AI & NLP: Google Gemini API integration",
         "Chatbot: 24/7 AI support with personalized recommendations",
         "Analytics: Enhanced mood pattern analysis"
       ],
-      technologies: ["OpenAI GPT API", "Natural Language Processing", "Machine Learning"],
+      technologies: ["Google Gemini API", "Natural Language Processing", "Machine Learning"],
       icon: Brain,
       color: "text-blue-600 bg-blue-50 border-blue-200",
       priority: 'high'
