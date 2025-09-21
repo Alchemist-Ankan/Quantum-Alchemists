@@ -1,4 +1,5 @@
 {
+  "name": "mindbridge-coach",
   "version": 2,
   "builds": [
     {
