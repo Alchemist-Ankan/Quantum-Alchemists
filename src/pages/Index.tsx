@@ -8,11 +8,12 @@ import MoodAnalytics from "../components/MoodAnalytics";
 import EmergencySupport from "../components/EmergencySupport";
 import PersonalizedCoach from "../components/PersonalizedCoach";
 import WellnessActivities from "../components/WellnessActivities";
+import FutureRoadmap from "../components/FutureRoadmap";
 import { runDataCleanup, shouldRunCleanup, markCleanupComplete } from "../utils/dataCleanup";
 
 export default function Index() {
   const [mood, setMood] = useState<string>();
-  const [currentView, setCurrentView] = useState<'dashboard' | 'analytics' | 'coach' | 'wellness' | 'emergency'>('dashboard');
+  const [currentView, setCurrentView] = useState<'dashboard' | 'analytics' | 'coach' | 'wellness' | 'emergency' | 'roadmap'>('dashboard');
 
   // Run data cleanup on app startup if needed
   useEffect(() => {
@@ -152,6 +153,27 @@ export default function Index() {
               >
                 🆘 <span className="hidden sm:inline">Support</span>
               </button>
+              <button
+                onClick={() => setCurrentView('roadmap')}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    setCurrentView('roadmap');
+                  }
+                }}
+                className={`px-2 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-medium transition-all whitespace-nowrap focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 ${
+                  currentView === 'roadmap'
+                    ? 'bg-gradient-to-r from-purple-500 to-indigo-500 text-white shadow-md'
+                    : 'text-gray-600 dark:text-gray-400 hover:text-purple-500 dark:hover:text-purple-400'
+                }`}
+                role="tab"
+                aria-selected={currentView === 'roadmap'}
+                aria-controls="roadmap-panel"
+                aria-label="Future Roadmap - Technology vision and development phases"
+                tabIndex={0}
+              >
+                🚀 <span className="hidden sm:inline">Roadmap</span>
+              </button>
             </div>
           </div>
         </nav>
@@ -193,6 +215,12 @@ export default function Index() {
         {currentView === 'emergency' && (
           <div id="emergency-panel" role="tabpanel" aria-labelledby="emergency-tab" className="max-w-4xl mx-auto">
             <EmergencySupport />
+          </div>
+        )}
+
+        {currentView === 'roadmap' && (
+          <div id="roadmap-panel" role="tabpanel" aria-labelledby="roadmap-tab" className="w-full">
+            <FutureRoadmap />
           </div>
         )}
 
