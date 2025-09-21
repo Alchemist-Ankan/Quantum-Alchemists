@@ -4,10 +4,16 @@ A mental health coaching application built with React, TypeScript, and Tailwind 
 
 ## Features
 
-- **Mood Check-in**: Select from 5 mood states (Happy, Sad, Anxious, Stressed, Tired)
-- **AI Assistant Chat**: Get contextual responses and mental health tips based on your mood
-- **Responsive Design**: Works on desktop and mobile devices
-- **Dark Mode Support**: Automatic dark/light theme switching
+- **🔐 User Authentication**: Sign in with Google or continue as guest
+- **👤 User Profiles**: Personalized experience with profile management
+- **📊 Mood Check-in**: Select from 5 mood states (Happy, Sad, Anxious, Stressed, Tired)
+- **🤖 AI Assistant Chat**: Get contextual responses and mental health tips based on your mood
+- **☁️ Cloud Sync**: Save your data across devices (when signed in)
+- **📱 Responsive Design**: Works on desktop and mobile devices
+- **🌙 Dark Mode Support**: Automatic dark/light theme switching
+- **🆘 Emergency Support**: Crisis resources and immediate help
+- **🧘 Wellness Activities**: Guided meditation, breathing exercises, and journaling
+- **📈 Analytics**: Track your mood patterns and wellness progress
 
 ## Project Structure
 
@@ -46,18 +52,26 @@ Before running this project, make sure you have Node.js installed on your system
    ```bash
    npm install
    ```
+2. **Configure Authentication** (Optional):
+   ```bash
+   # Copy environment template
+   cp .env.example .env.local
+   
+   # Edit .env.local with your Firebase credentials
+   # (If not configured, app will use mock authentication)
+   ```
 
-2. **Start development server**:
+3. **Start development server**:
    ```bash
    npm run dev
    ```
 
-3. **Build for production**:
+4. **Build for production**:
    ```bash
    npm run build
    ```
 
-4. **Preview production build**:
+5. **Preview production build**:
    ```bash
    npm run preview
    ```
@@ -68,6 +82,8 @@ Before running this project, make sure you have Node.js installed on your system
 - **TypeScript** - Type safety
 - **Vite** - Build tool and dev server
 - **Tailwind CSS** - Utility-first CSS framework
+- **Firebase** - Authentication and real-time database
+- **React Router DOM** - Client-side routing
 - **Lucide React** - Icon library
 
 ## Mental Health Resources
