@@ -34,24 +34,24 @@ export default function UserProfile() {
       {/* Profile Button */}
       <button
         onClick={() => setShowProfile(!showProfile)}
-        className="flex items-center space-x-2 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-full px-3 py-2 border border-white/20 dark:border-gray-700 hover:bg-white/90 dark:hover:bg-gray-700/90 transition-all duration-200"
+        className="flex items-center space-x-2 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-full px-3 py-2 border border-white/20 dark:border-gray-700 hover:bg-white/90 dark:hover:bg-gray-700/90 transition-all duration-200 min-w-0 flex-shrink-0"
       >
         {user.photoURL ? (
           <img
             src={user.photoURL}
             alt={user.displayName || 'Profile'}
-            className="w-8 h-8 rounded-full object-cover"
+            className="w-8 h-8 rounded-full object-cover flex-shrink-0"
           />
         ) : (
-          <div className="w-8 h-8 rounded-full bg-gradient-to-r from-purple-500 to-indigo-500 flex items-center justify-center text-white font-semibold text-sm">
+          <div className="w-8 h-8 rounded-full bg-gradient-to-r from-purple-500 to-indigo-500 flex items-center justify-center text-white font-semibold text-sm flex-shrink-0">
             {user.isAnonymous ? '👤' : (user.displayName?.[0] || user.email?.[0] || '?')}
           </div>
         )}
-        <span className="text-sm font-medium text-gray-700 dark:text-gray-300 hidden sm:inline">
+        <span className="text-sm font-medium text-gray-700 dark:text-gray-300 hidden sm:inline truncate max-w-32">
           {user.isAnonymous ? 'Guest' : (user.displayName || user.email)}
         </span>
         <svg
-          className={`w-4 h-4 text-gray-500 transition-transform duration-200 ${
+          className={`w-4 h-4 text-gray-500 transition-transform duration-200 flex-shrink-0 ${
             showProfile ? 'rotate-180' : ''
           }`}
           fill="none"
@@ -71,27 +71,34 @@ export default function UserProfile() {
             onClick={() => setShowProfile(false)}
           />
           
-          {/* Dropdown Content */}
-          <div className="absolute right-0 mt-2 w-80 bg-white/95 dark:bg-gray-800/95 backdrop-blur-sm rounded-xl shadow-2xl border border-white/20 dark:border-gray-700 z-50">
+          {/* Dropdown Content - Different positioning for mobile vs desktop */}
+          <div className="fixed z-50 bg-white/95 dark:bg-gray-800/95 backdrop-blur-sm rounded-xl shadow-2xl border border-white/20 dark:border-gray-700 overflow-y-auto
+            /* Mobile: Full width modal at bottom */
+            max-sm:bottom-0 max-sm:left-0 max-sm:right-0 max-sm:rounded-b-none max-sm:rounded-t-xl max-sm:max-h-[80vh]
+            /* Desktop: Dropdown from top right */
+            sm:top-16 sm:right-4 sm:w-80 sm:max-h-[calc(100vh-5rem)]
+            /* Ensure it fits on smaller screens */
+            max-w-[calc(100vw-1rem)]">
+            
             {/* Header */}
-            <div className="p-4 border-b border-gray-200 dark:border-gray-600">
+            <div className="p-3 sm:p-4 border-b border-gray-200 dark:border-gray-600">
               <div className="flex items-center space-x-3">
                 {user.photoURL ? (
                   <img
                     src={user.photoURL}
                     alt={user.displayName || 'Profile'}
-                    className="w-12 h-12 rounded-full object-cover"
+                    className="w-10 h-10 sm:w-12 sm:h-12 rounded-full object-cover flex-shrink-0"
                   />
                 ) : (
-                  <div className="w-12 h-12 rounded-full bg-gradient-to-r from-purple-500 to-indigo-500 flex items-center justify-center text-white font-bold text-lg">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-gradient-to-r from-purple-500 to-indigo-500 flex items-center justify-center text-white font-bold text-sm sm:text-lg flex-shrink-0">
                     {user.isAnonymous ? '👤' : (user.displayName?.[0] || user.email?.[0] || '?')}
                   </div>
                 )}
-                <div className="flex-1">
-                  <h3 className="font-semibold text-gray-900 dark:text-white">
+                <div className="flex-1 min-w-0">
+                  <h3 className="font-semibold text-gray-900 dark:text-white truncate text-sm sm:text-base">
                     {user.isAnonymous ? 'Guest User' : (user.displayName || 'User')}
                   </h3>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                  <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 truncate">
                     {user.isAnonymous ? 'Temporary session' : (user.email || 'No email')}
                   </p>
                 </div>
@@ -99,12 +106,12 @@ export default function UserProfile() {
             </div>
 
             {/* Account Status */}
-            <div className="p-4">
+            <div className="p-3 sm:p-4">
               {user.isAnonymous ? (
-                <div className="bg-gradient-to-r from-yellow-50 to-orange-50 dark:from-yellow-900/20 dark:to-orange-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-3 mb-4">
+                <div className="bg-gradient-to-r from-yellow-50 to-orange-50 dark:from-yellow-900/20 dark:to-orange-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-3 mb-3 sm:mb-4">
                   <div className="flex items-start space-x-2">
-                    <span className="text-yellow-600 dark:text-yellow-400">⚠️</span>
-                    <div className="flex-1">
+                    <span className="text-yellow-600 dark:text-yellow-400 flex-shrink-0">⚠️</span>
+                    <div className="flex-1 min-w-0">
                       <h4 className="text-sm font-medium text-yellow-800 dark:text-yellow-200">
                         Guest Session
                       </h4>
@@ -115,10 +122,10 @@ export default function UserProfile() {
                   </div>
                 </div>
               ) : (
-                <div className="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 border border-green-200 dark:border-green-800 rounded-lg p-3 mb-4">
+                <div className="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 border border-green-200 dark:border-green-800 rounded-lg p-3 mb-3 sm:mb-4">
                   <div className="flex items-start space-x-2">
-                    <span className="text-green-600 dark:text-green-400">✅</span>
-                    <div className="flex-1">
+                    <span className="text-green-600 dark:text-green-400 flex-shrink-0">✅</span>
+                    <div className="flex-1 min-w-0">
                       <h4 className="text-sm font-medium text-green-800 dark:text-green-200">
                         Account Connected
                       </h4>
@@ -131,7 +138,7 @@ export default function UserProfile() {
               )}
 
               {/* Data Summary */}
-              <div className="space-y-2 mb-4">
+              <div className="space-y-2 mb-3 sm:mb-4">
                 <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300">
                   Your Data:
                 </h4>
@@ -153,7 +160,7 @@ export default function UserProfile() {
             </div>
 
             {/* Actions */}
-            <div className="border-t border-gray-200 dark:border-gray-600 p-4 space-y-2">
+            <div className="border-t border-gray-200 dark:border-gray-600 p-3 sm:p-4 space-y-2">
               {user.isAnonymous ? (
                 <button
                   onClick={handleUpgradeToGoogle}
