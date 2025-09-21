@@ -105,4 +105,4 @@ npm run dev
 
 ---
 
-**Built by Quantum Alchemists Team**
+**Built with ❤️ by Quantum Alchemists Team**
