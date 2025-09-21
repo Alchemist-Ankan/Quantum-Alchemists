@@ -1,2 +1,66 @@
-.vercel
-VERCEL-ENV-SETUP.md
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Production builds
+dist/
+build/
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Deployment
+.vercel/
+.netlify/
+
+# Development and testing files
+test-firebase.js
+*.test.local
+
+# Favicon generation scripts (keep final assets only)
+generate-favicons.js
+generate-png-favicon.js
+
+# Development documentation (moved to docs/ folder)
+docs/
+
+# Text files in public (development notes)
+public/favicon-simple.txt
+public/meditation-icon.txt
+
+# Python virtual environment (if any)
+.venv/
+venv/
+__pycache__/
+
+# Temporary files
+*.tmp
+*.temp
